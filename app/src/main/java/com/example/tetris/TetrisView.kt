@@ -24,7 +24,6 @@ class TetrisView(context: Context, attrs: AttributeSet? = null) : View(context, 
     private val paint = Paint()
 
     init {
-        // Initialize the board with empty cells (0 represents empty)
         clearBoard()
     }
 
@@ -38,7 +37,7 @@ class TetrisView(context: Context, attrs: AttributeSet? = null) : View(context, 
         if (canMove(dx, dy)) {
             pieceX += dx
             pieceY += dy
-            invalidate() // Redraw the view with the updated piece position
+            invalidate()
         } else if (dy > 0) {
             lockPiece()
             clearLines()
@@ -87,7 +86,6 @@ class TetrisView(context: Context, attrs: AttributeSet? = null) : View(context, 
         pieceX = 3
         pieceY = 0
         if (!canMove(0, 0)) {
-            // Game over logic (clear board or reset)
             clearBoard()
         }
     }
@@ -107,18 +105,17 @@ class TetrisView(context: Context, attrs: AttributeSet? = null) : View(context, 
                 val deltaY = event.y - initialY
 
                 if (abs(deltaX) > abs(deltaY)) {
-                    // Horizontal swipe
                     if (deltaX > 0) {
-                        movePiece(1, 0) // Move right
+                        movePiece(1, 0)
                     } else {
-                        movePiece(-1, 0) // Move left
+                        movePiece(-1, 0)
                     }
                 } else if (deltaY > 0 && abs(deltaY) > blockSize / 2) {
-                    movePiece(0, 1) // Move down
+                    movePiece(0, 1)
                 } else {
-                    rotatePiece() // Tap to rotate
+                    rotatePiece()
                 }
-                invalidate() // Redraw after input
+                invalidate()
             }
         }
         return true
@@ -147,7 +144,6 @@ class TetrisView(context: Context, attrs: AttributeSet? = null) : View(context, 
             }
         }
 
-        // Draw the current piece
         for (y in currentPiece.shape.indices) {
             for (x in currentPiece.shape[y].indices) {
                 if (currentPiece.shape[y][x] != 0) {
@@ -160,7 +156,6 @@ class TetrisView(context: Context, attrs: AttributeSet? = null) : View(context, 
             }
         }
 
-        // Draw grid lines
         paint.color = Color.BLACK
         for (y in 0..rows) {
             canvas.drawLine(0f, (y * blockSize).toFloat(), (cols * blockSize).toFloat(), (y * blockSize).toFloat(), paint)
